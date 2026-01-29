@@ -1,0 +1,174 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amsthm,amssymb,tcolorbox}
+\geometry{letterpaper, top=5in, margin=0.75in}
+\linespread{1.2}
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+
+\usepackage[framemethod=default]{mdframed}
+\newcommand{\cbox}[2][blue!15]{\noindent\begin{mdframed}[backgroundcolor=#1]#2\end{mdframed}}
+\newcommand{\defn}[1]{\cbox[red!15]{\textbf{Definition:} #1}}
+\newcommand{\rmk}[1]{\cbox[teal!15]{\textbf{Remark:} #1}}
+\newcommand{\exer}[1]{\cbox[green!15]{\textbf{Exercise:} #1}}
+\newcommand{\thm}[1]{\cbox[blue!15]{\textbf{Theorem:} #1}}
+\newcommand{\prop}[2]{\cbox[orange!15]{\textbf{Proposition:} #1\\\textbf{Proof:} #2}}
+\mdfsetup{skipabove=0em}
+ 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[2][Question]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{}[Solution]}{\end{}}
+ 
+\begin{document}
+
+\title{Math 142 - Lecture Notes}
+\author{Jingxuan Shan}
+\date{Jan 5, 2026}
+\maketitle
+
+\noindent The Modeling process:\\
+\cbox{Real World Problem $\rightarrow$ Building the Model (Define the problem; Make some assumptions; Define variables) $\rightarrow$ Get a model solution $\rightarrow$ Analysis + Model Assessment $\rightarrow$ Report the results.}
+We can choose to further refine the model instead during the last two steps.\\
+The lack of a precise meaning and a specified scope makes a real-world problem different from a math word problem, which usually supplies all the needed information.\\\\
+\textbf{Jan. 7}\\
+Suppose we sample the population with time intervals of $\Delta t$, called censuses.\\
+Let $N_k$ denote the population size at the $k-th$ census.\\
+We have that $N_{k+1}=N_k+\text{number born in }\Delta t-\text{number died in }\Delta t$.\\
+Now we try to model births and deaths. Assume that the number of bacteria born in $\Delta t$ is directly proportional to $N_k$. Assume that it is also directly proportional to $\Delta t$.\\
+then we have that $\text{number born }=b\Delta tN_k$. Similarly, $\text{number dead }=m\Delta tN_k$, with $b,m$ be birth rate and mortality rate respectively.\\
+Then we have $N_{k+1}=N_k+b\Delta tN_k-m\Delta tN_k$. Note that in order for this formula to work, we need some starting value $N_0$.\\
+We try to seek a general formula to avoid doing too many calculations.\\
+We have that $N_{k+1}=(1+(b-m)\Delta t)N_k$, let $R_0=b-m$ and we have $N_{k+1}=(1+R_0\Delta t)N_k$.\\
+Then we have that $N_k=(1+R_0\Delta t)^kN_0$.\\
+Alternatively, we can also consider $b$ to be the doubling time. That is, the time taken for one bacterium to divide into two.\\
+Consider a single cell that takes $k$ censuses to divide. (Doubling time = $k$)\\
+Let $N_0=1$, then we have $N_k=2$. Since $N_k=(1+b\Delta t)^kN_0$, this gives us $b\Delta t=2^\frac{1}{k}-1$.\\
+For example, if $\Delta t$ is 1hr, and it takes a cell 3hrs to divide, then $b\Delta t=2^\frac{1}{3}-1=0.260$.\\
+Similarly, we can consider $m$ as the time needed for half the cells to die, while neglecting births.\\
+When $m<<b$, we often neglect mortality.\\
+When decimal points are present, be consistent and clear about the rounding method being used.\\
+\textbf{Jan. 9}\\
+We might notice that our model is giving decimals for some of its predictions. In reality, we cannot have "a half" of a bacterium.\\
+In reality, both births and deaths are a random process. We cannot predict exactly how many cells there will be in any given census.\\
+In other words, if we start several flasks with a certain number of cells, after some time the number of cells would likely become a range of different values.\\
+Our math model instead describes the average behavior and the average number of cells in the population at each census.\\
+Now, suppose we are using our model to predict the population after 1000hrs. Our model predicts that there will be $10^{103}$ cells, but there are only $10^{78}-10^{82}$ atoms in the observable universe.\\
+This is because our model predicts exponential growth which is unbounded. There are things we are not taking into consideration, such as constraints on physical space, food, etc.\\
+Suppose we are plotting our data to a graph. It would be very difficult to recognize exponential graphs, yet very easy to recognize linear (straight line) ones.\\
+Let us take the natural logarithm: $\ln N_k=\ln((1+R_0\Delta t)^kN_0)$.\\
+Then, $\ln N_k=\ln N_0+k\ln(1+R_0\Delta t)$.\\
+Therefore we can theorize that if we are to plot the graph of $\ln N_k$ against $k$, we should see a straight line, with slope $\ln(1+R_0\Delta t)$ and intercept $\ln N_0$.\\
+Now let us try to talk about some bigger animals. New scenario: A Sri Lankan National park. We want to predict the population size in yearly censuses.\\
+We are given the following info: There are 180 elephants initially, and half of them are female. Half of the female elephants are of productive age, and each single year about one fifth of the reproductive female elephants would give birth to a single calf. Finally, one in 30 elephants will die each year.\\
+This gives us the following equation: $N_{k+1}=N_k+\frac{1}{20}N_k-\frac{1}{30}N_k\Rightarrow N_{k+1}=\frac{61}{60}N_k$.\\
+Since we have that $N_0=180$, this gives us $N_k=(\frac{61}{60})^k180$.\\
+In order to prevent inbreeding, we might be transferring elephants between parks each year.\\
+In that case, $N_{k+1}=N_k-r$, with $r$ being the net number of elephants removed.\\
+\textbf{Jan. 12}\\
+Let us assume $N_0=180$. For the population size to be constant, we want the net removal rate to be equal to net increase due to reproduction. That is, $r=\frac{1}{60}N_k$.\\
+When $N_0=180$, we have $r=\frac{1}{60}180=3$.\\
+So $N_{k+1}=\frac{61}{60}N_k-3$, $N_0=180$ will remain for all $k$.\\
+Therefore $N=180$ is a fixed point.\\
+\defn{Given a recurrence equation $N_{k+1}=f(N_k)$, we say $\hat{N}$ is a fixed point of the recurrence equation if $f(\hat{N})=\hat{N}$.}
+New scenario: Pharmacokinetics\\
+A patient takes ibuprofen at $t=0$. Model the amount (concentration in mg/liter) in their blood in the following hours, at intervals of $\Delta t=1$hr.\\
+Let the amount after $k$ hrs be $a_k$. We want to predict a sequence $a_0,a_1,\cdots$. Assume $a_0=0$.\\
+It takes time for drugs to get from gut to blood. So 1hrs after the does is taken, we ad 40mg/L ibuprofen to the blood from the gut.\\
+Each hour, $24.25\%$ of the drug in blood is eliminated/absorbed.\\
+So we have that $a_1=40$, $a_2=0.7575a_1$, $a_3=0.7575a_2$, $\cdots$ $\Rightarrow$ $a_k=(0.7575)^{k-1}40$.\\
+So Amount of ibuprofen decays exponentially over time. In real life, patients take multiple doses spaced out over time. Assume the patient takes another pill after every 6hrs. The pills are taken at $t=0,6,12,18,\cdots$.\\
+We can see that our previous model is fine until the second pill is taken. When second pill is taken, we have $a_7=a_6-0.7575a_6+40$. Then the pill is absorbed for 6hrs, until the next pill is taken.\\
+In general, $\begin{cases}a_1=40 \\ a_{k+1}=\begin{cases}0.7575a_k\text{ unless }k\text{ is a multiple of 6} \\ 0.7575a_k+40\text{ if }k\text{ is a multiple of 6}\end{cases}\end{cases}$.\\
+\textbf{Jan. 14}\\
+We can see that recursive equations allow us to "elegantly" write complicated models.\\
+Can we figure out a dosing regimen to ensure a certain level of ibuprofen in the patient's blood?\\
+Specifically, what is the maximum amount of ibuprofen in the patient's blood?\\
+Define a new sequence $(P_0,P_1,\cdots)$ where $P_n$ is the concentration after pill $i$ enters the blood stream.\\
+We want to predict $P_{k+1}$ from $P_k$. Let $\Delta t=6$hrs.\\
+We have $P_{k+1}=P_k-$ (amount lost in 6hrs) + (amount gained).\\
+$\Rightarrow\begin{cases} P_{k+1}=(0.7575)^6P_k+40 \\ P_0=40 \end{cases}$.\\
+How are the peaks behaving? $P_0=40,P_1\approx 47.56,P_2\approx 48.99,P_3\approx 49.26,P_4\approx 49.31$.\\
+It looks like the $P_k$'s are converging. That is, as $k\to\infty$, $P_k\to\hat{P}$.\\
+We have that $\hat{P}=(0.7575)^6\hat{P}+40\Rightarrow \hat{P}=\frac{40}{1-0.7575^6}\approx 49.3$mg/L.\\\\
+\underline{Demographic Modeling}
+We can include demographic variables (age, gender etc.) by breaking our population down into subpopulations and model each subpopulation.\\
+We will focus on separating by ages. As an organism ages, which subpopulation it belongs to will change.\\
+Scenario: Seabirds in a colony. Given the following information:\begin{itemize}
+\item Censuses are annual and conducted just after breeding season. We count the number of chicks, adults, etc.
+\item We track their ages as age 0, age 1, age 2 and age 3+. They stop reproducing at age 3.
+\item Mortality rates:\begin{itemize}
+\item 60\% of chicks (age 0) die before reaching age 1.
+\item 70\% of birds of age 1 die before reaching age 2.
+\item 90\% of birds of age 2 die before reaching age 3.
+\end{itemize}
+\item Birth rates:\begin{itemize}
+\item On average each 1yr female produces 2 female chicks.
+\item On average each 2yr female produces 1.5 female chicks.
+\item Assume age 0 and and 3+ cannot reproduce.
+\end{itemize}
+\end{itemize}
+Assumption: We only tract the females, as they are $\frac{1}{2}$ of the total population.\\
+$$\text{We have }\vec{N}^{(k)}=\begin{bmatrix}N_0^{(k)}\\N_1^{(k)}\\N_2^{(k)}\\N_3^{(k)}\end{bmatrix}.$$\\
+We want to predict $\vec{N}^{(k)}$ from $\vec{N}^{(k)}$ at $\Delta t=1$yr. We have that$\begin{cases}
+N_1^{(k+1)}=N_0^{(k)}-0.6N_0^{(k)}=0.4N_0^{(k)}\\
+N_2^{(k+1)}=N_1^{(k)}-0.7N_1^{(k)}=0.3N_1^{(k)}\\
+N_3^{(k+1)}=N_2^{(k)}-0.9N_2^{(k)}=0.1N_2^{(k)}\\
+\end{cases}$.\\
+\textbf{Jan. 16}\\
+We did not model the number of chicks (aged 0) yet.\\
+$N_0^{(k+1)=2N_1^{(k)}}+1.5N_2^{(k)}$.\\
+At this point, we have:\\
+$\begin{cases}
+N_0^{(k+1)}=2N_1^{(k)}+1.5N_2^{(k)}\\
+N_1^{(k+1)}=0.4N_0^{(k)}\\
+N_2^{(k+1)}=0.3N_1^{(k)}\\
+N_3^{(k+1)}=0.1N_2^{(k)}\\
+\end{cases}$.\\
+These equations are linear, so we can represent them with a matrix:\\
+$\vec{N}^{(k+1)}=\begin{bmatrix}
+0 & 2 & 1.5 & 0 \\
+0.4 & 0 & 0 & 0 \\
+0 & 0.3 & 0 & 0 \\
+0 & 0 & 0.1 & 0 \\
+\end{bmatrix}\vec{N}^{(k)}$\\
+Given that $N^{(0)}=1000, N_1^{(0)}=200, N_2^{(0)}=100, N_3^{(0)}=10$, how many seabirds are there after 1yr, 2yr, etc?\\
+$N^{(1)}=AN^{(0)}=\begin{bmatrix}550\\400\\60\\10\end{bmatrix}$, $N^{(2)}=AN^{(1)}=\begin{bmatrix}890\\220\\120\\6\end{bmatrix}$.\\
+There is a useful theory for demographic models for $m$ subpopulations that have the form $\vec{N}^{(k+1)}=f(\vec{N}^{(k)})=L\vec{N}^{(k)}$, where $L$ is a $m\times m$ matrix called a Leslie matrix.\\
+Let us find a closed form for our model:\\
+$N^{(1)}=LN^{(0)}$\\
+$N^{(2)}=LN^{(1)}=L^2N^{(0)}$\\
+$\cdots$\\
+$N^{(k)}=L^kN^{(0)}$\\
+Where $L^k$ is represented matrix multiplication.\\\\
+\** Check seabirds code\\
+\underline{Observations:}\begin{itemize}
+\item Plot of $N^{(k)}$ shows the behavior of of each individual subpopulation.
+\item How are we going to define/determine whether a population is growing or decreasing?\begin{itemize}
+\item Check each population's behavior. (Stable Age Distribution?)
+\item Compute total birds for each census.
+\end{itemize}
+\end{itemize}
+Often in demographic models the system settles down to where it might be increasing/decreasing but a constant $x\%$ is in subpopulation $A$ and $y\%$ in subpopulation $B$.\\
+\underline{Stable Age Distributions}
+Let $N^{(k)}=L^kN^{(0)}$.\\
+Assume that $N^{(0)}$ is an eigenvector of $L$. That is, $LN^{(0)}=\lambda N^{(0)}$ where $\lambda$ is the corresponding eigenvalue.\\ Then $N^{(k)}=L^kN^{(0)}$ becomes $\lambda^kN^{(0)}$.\\
+So if $N^0$ is an eigenvector of $L$, then the $k$-th census is just an exponential times the initial population.\\ 
+
+
+\end{document}

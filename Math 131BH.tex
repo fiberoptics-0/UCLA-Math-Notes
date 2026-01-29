@@ -1,0 +1,402 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amsthm,amssymb,tcolorbox}
+\geometry{letterpaper, top=5in, margin=0.75in}
+\linespread{1.2}
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+
+\usepackage[framemethod=default]{mdframed}
+\newcommand{\cbox}[2][blue!15]{\noindent\begin{mdframed}[backgroundcolor=#1]#2\end{mdframed}}
+\newcommand{\defn}[1]{\cbox[red!15]{\textbf{Definition:} #1}}
+\newcommand{\rmk}[1]{\cbox[teal!15]{\textbf{Remark:} #1}}
+\newcommand{\heu}[1]{\cbox[green!15]{\textbf{Heuristic:} #1}}
+\newcommand{\thm}[1]{\cbox[blue!15]{\textbf{Theorem:} #1}}
+\newcommand{\prop}[2]{\cbox[orange!15]{\textbf{Proposition:} #1\\\textbf{Proof:} #2}}
+\mdfsetup{skipabove=0em}
+
+\newcommand{\mesh}{\text{mesh}}
+\newcommand{\intab}{\int^b_a}
+\newcommand{\osc}{\text{osc}}
+ 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[2][Question]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{}[Solution]}{\end{}}
+
+\setlength{\parindent}{0px}
+ 
+\begin{document}
+
+\title{Math 131BH - Notes}
+\author{Jingxuan Shan}
+\date{Jan 5, 2026}
+\maketitle
+\defn{A topological space $(X,\tau)$ is a set $X$ with a collection $\tau\subseteq\mathcal{P}(X)$, called a topology on $X$, such that:\\
+i) $\emptyset,X\in\tau$\\
+ii) $\tau$ is closed under finite intersections and arbitrary unions.}
+The elements in $\tau$ are open sets, their complements are closed.\\
+For example, for some set $X$, $\tau=\{\emptyset,X\}$ gives a trivial topology, and $\tau=\mathcal{P}(X)$ gives the discrete topology.\\
+\defn{A neighborhood $V\subseteq X$ of $x\in X$ is a set such that $\exists U\in\tau$ such that $x\in U\subseteq V$.}
+\defn{We say that $S\subseteq\mathcal{P}(X)$ generates a topology $\tau$ on $X$ if $\tau$ is the smallest topology containing $S$.}
+\defn{Given $Y\subseteq X$, the subspace topology on $Y$ has open sets of the form $U\cap Y$, with $U$ being an open set in $X$.}
+Any metric on $X$ generates a topology. The generating set is $\{B_r(x):x\in X,r>0\}$.\\
+If given a norm $||\cdot||$ in a vector space $V$, we can induce a metric (and thus also a topology) on $V$ by $d(v,w)=||v-w||$. In particular, $\R^n$ is a topological space with the Euclidean metric.\\
+\defn{A subset $S\subseteq X$ of a topological space is dense in $X$ if every open set in $X$ intersects $S$ nontrivially.}
+\rmk{If $X$ is a metric space, this is equivalent to saying that every open ball intersects $S$.}
+\defn{A topological space is called separable if it contains a countable dense subset.}
+\heu{When trying to show a metric space is not separable, it may be useful to construct a collection of uncountable points s.t. every two points are a fixed distance apart. Then we can argue that no countable subset may intersect an uncountable number of mutually exclusive balls.}
+We can show that $\R$ is separable, since $\Q$ is a countable dense subset.\\
+The same goes for $\R^n$, with $\Q^n$ being a countable dense subset.\\
+A discrete metric space is separable if and only if it is at most countably infinite, since the fact that every $\{x\}$ is open shows that the only dense subset of $X$ is itself.\\
+Exercise: Let $l^p(\N)$ be a vector space with norm $||(a_n)_{n\geq 1}||_{l^p}=(\sum_{n=1}^\infty|a_n|^p)^\frac{1}{p}$.\\
+Show that $l^p(\N)$ is separable for $1\leq p<\infty$, but not $p=\infty$.\\
+\defn{Suppose we have $f:(X,\tau)\to(Y,\kappa)$.\\
+We say that $f$ is continuous if the preimage of every open set is open. That is, $f^{-1}(V)\in\tau$ for every $V\in\kappa$.\\
+We say that $f$ is continuous at $x\in X$ if the preimage of any neighborhood of $f(x)$ is a neighborhood of $x$.}
+\defn{A subset $A\subseteq X$ of a topological space $X$ is called connected if it is not disconnected. That is, there does not exist open, nonempty subsets $U,V\subseteq X$ such that $A\subseteq U\cup V$, $A\cap U\neq\emptyset$, $A\cap V\neq\emptyset$, $U\cap V=\emptyset$.}
+\defn{We say that $A\subseteq X$ is path-connected if any two points $x.y\in A$ are connected by a path in $A$. That is, a continuous function $f:[0,1]\to A$ such that $f(0)=x$, $f(1)=y$.}
+\prop{Let $f:X\to Y$ be a continuous map of topological spaces. If $X$ is connected, then $f(X)$ is connected.}{We proceed by contrapositive.\\
+Suppose that $f(X)$ is disconnected. Then we have open nonempty subsets $U,V\subseteq Y$ such that $f(X)\subseteq U\cup V$, $f(X)\cap U\neq\emptyset$, $f(X)\cap V\neq\emptyset$, $U\cap V=\emptyset$.\\
+By the continuous nature of $f$, we have that $f^{-1}(U),f^{-1}(V)$ are open.\\
+We also have that $f^{-1}(U)\cap f^{-1}(V)=\emptyset$ and $f^{-1}(U)\cup f^{-1}(V)\subseteq f^{-1}(U\cup V)=f^{-1}(f(X))=X$.\\
+Thus, $X$ is disconnected.}
+\prop{If $f:X\to Y$ is continuous and $X$ is path-connected, then $f(X)$ is path-connected.}{Exercise.}
+\defn{Let $X$ be a topological space. An open cover of a set $K\subseteq X$ is a collection $\mathcal{F}=\{U_\alpha\}_{\alpha\in I}$ of open sets such that $K\subseteq\bigcup_{\alpha\in I}U_\alpha$.}
+\defn{The set $K\subseteq X$ is called compact if every open cover of $K$ has a finite subcover.\\
+That is, if $K\subseteq\bigcup_{\alpha\in I}U_\alpha$, there exists $n_1,\cdots,n_k$ such that $K\subseteq\bigcup_{j=1}^kU_{n_j}$.}
+We say that $K$ is relatively compact or precompact if $\bar{K}$ is compact.\\
+\defn{Let $X$ be a metric space. We say $K\subseteq X$ is totally bounded if for all $\epsilon>0$, there exists finitely many open balls $B_1,\cdots,B_n$ of radius $\epsilon$ such that $K\subseteq\bigcup_{j=1}^nB_j$.}
+\defn{Let $X$ be a metric space. $K\subseteq X$ is sequentially compact if every sequence $\{x_n\}\subseteq K$ has a convergent subsequence $\{x_{n_k}\}$ with $x_{n_k}\to x$ for some $x\in K$.}
+\thm{The following are equivalent for a subset $K\subseteq X$ of metric space $X$:\\
+(a) $K$ is compact\\
+(b) $K$ is sequentially compact\\
+(c) $K$ is complete and totally bounded}
+We already know that in $\R$, every bounded sequence has a convergent subsequence.\\
+\thm{In $\R^n$, $A$ is sequentially compact $\Leftrightarrow$ A is closed and bounded.}
+\textbf{Jan. 7}\\
+\prop{The following are equivalent for a subset $K\subseteq X$ of a metric space $X$:\\
+(a) K is compact\\
+(b) K is sequentially compact\\
+(c) K is complete and totally bounded}
+{We WTS (a)$\Rightarrow$(c)$\Leftrightarrow$(b)$\Rightarrow$(a).\\
+(a)$\Rightarrow$(c): If $K$ is compact, then it is clearly totally bounded, since for any $\epsilon>0$ there exists a finite subcover for the open cover $\{B(x,\epsilon):x\in K\}$.\\
+Now we WTS completeness. Assume otherwise.\\
+Let $(x_n)_{n\in\N}\subseteq K$ be a Cauchy sequence that is not convergent. Note that this implies that there is no convergent subsequence (otherwise the Cauchy sequence would converge).\\
+Define $r_n=\inf_{m\neq n}d(x_n,x_m), B_n=B(x_n,r_n)$. Notice that $r_n>0$ for all $n$ (otherwise we can construct a subsequence converging to $x_n$).\\
+Note that by construction, $B_n\cap (x_k)_{k\in\N}=\{x_n\}$.\\
+Now define $V=X\setminus\overline{\bigcup_{n\geq 1}B(x_n,\frac{r_n}{2})}$.\\
+Claim: $\{V\}\cup\{B_n\}_{n\geq 1}$ is an open cover of $K$. Assume otherwise.\\
+Then $\exists x\in X$ s.t. $d(x,x_n)\geq r_n\forall n$ and $\exists(y_{n_k})_{k\in\N}$ s.t. $y_{n_k}\in B_{n_k}$ and $y_{n_k}\to x$.\\
+Then $d(x,x_{n_k})=d(x,y_{n_k})+d(y_{n_k},x_{n_k})<d(x,y_{n_k})+r_n\to 0$, we have a convergent subsequence, leading to a contradiction.\\
+Therefore, $\{V\}\cup\{B_n\}_{n\in\N}$ is an open cover of $K$. However, since each $x_n$ is contained exactly in one $B_n$, and $V$ contains none of the $x_n$, any finite subset of this open cover would fail to contain the entirety of $\{x_n\}_{n\in\N}\subseteq K$. This contradicts the compactness of $K$.\\
+Therefore, $K$ is complete.\\
+(b)$\Rightarrow$(c): Completeness is clear since any Cauchy sequence would have a convergent subsequence by sequential compactness.\\
+Now we WTS totally boundedness. Assume otherwise.\\
+Then for some $\epsilon>0$, there is no finite cover by $\epsilon$-balls of $K$.\\
+We can inductively select $x_1,x_2,\cdots$: $x_1\in K$ is arbitrary. $x_2\in K\setminus B(x_1,\epsilon)$, $x_3\in K\setminus(B(x_1,\epsilon)\cup B(x_2,\epsilon))$, $\cdots$.\\
+But then we have that $d(x_n,x_m)\geq\epsilon\forall n\neq m$, it is impossible for any subsequence to be Cauchy. Therefore, $(x_n)_{n\in\N}\subseteq K$ has no convergent subsequence, contradicting the sequential compactness of $K$.\\
+(c)$\Rightarrow$(b): We have some arbitrary sequence $(x_n)_{n\in\N}$. Let us inductively select a sequence of balls: $(B_n)_{n\in\N}$.\\
+Define $\epsilon_n=\frac{1}{2^n}$. Since $K$ is totally bounded, there exists a finite cover of $K$ that consi  sts of $\epsilon_1$-balls. Since the sequence has infinite elements, there exists $B_1=B(y_1,\epsilon_1)$ such that $B_1\cap\{x_n\}_{n\in\N}$ has infinite elements.\\
+Now consider the finite cover that consists of $\epsilon_2$-balls. By the same logic, there exists $B_2=B(y_2,\epsilon_2)$ such that $B_2\cap B_1\cap\{x_n\}_{n\in\N}$ has infinite elements.\\
+Proceed by induction, we have a sequence of balls $(B_n)_{n\in\N}$.\\
+Now we can select a subsequence $(x_{n_k})_{k\in\N}$ where $x_{n_k}\in B_k\forall k\in\N$.\\
+We have that $\forall i,j\in\N$, $d(x_{n_i},x_{n_j})<2\epsilon_{\min(n_i,n_j)}\to 0$, therefore $(x_{n_k})_{k\in\N}$ is Cauchy.\\
+Due to the completeness of $K$, we have that $(x_n)_{n\in\N}$ has a convergent subsequence, therefore $K$ is sequentially compact.\\
+(b)$\Rightarrow$(a): \textbf{Lemma}: If $K$ is sequentially compact and $\mathcal{F}$ is any open cover of $K$, then $\exists\epsilon>0$ s.t. $\forall x\in K$, $\exists U\in\mathcal{F}$ s.t. $B(x,\epsilon)\subseteq U$. The largest of such $\epsilon$ is called the Lebesgue radius of $\mathcal{F}$.\\
+To prove this, assume otherwise. Then there exists a sequence of balls $(B(x_n,r_n))_{n\in\N}$ with $r_n\to 0$ that are not contained fully in any $U\in\mathcal{F}$.\\
+By sequential compactness we have that $x_n\to x\in K$. Take $U\in\mathcal{F}$ s.t. $x\in U$. Then $\exists r>0$ s.t. $B(x,r)\subseteq U$. But since $x_{n_k}\to x$ and $r_{n_k}\to 0$, for some large enough $k$ this contradicts $B_{n_k}$ being not contained in $U$, thus the Lebesgue radius exists.\\
+Now, let $\mathcal{F}$ be an open cover of $K$, and $\epsilon>0$ be its Lebesgue radius. Since sequentially compact $\Rightarrow$ totally bounded, let $B_1,\cdots,B_n$ be an $\epsilon$-cover of $K$ and pick $U_1,\cdots,U_n\in\mathcal{F}$ s.t. $B_k\subseteq U_k\forall 1\leq k\leq n$.\\
+Then $U_1,\cdots, U_n$ is a finite subcover of $K$ from $\mathcal{F}$.}
+\prop{In a metric space, a closed subset of a compact set is compact.}
+{We have compact $\rightarrow$ sequentially bounded. Let $K$ be compact, $K'\subseteq K$ be closed.\\
+Let $(x_n)_{n\in\N}\subseteq K'\subseteq K$, then $\exists x\in K$ s.t. $x_{n_k}\to x$.\\
+Since $K'$ closed, $x\in\bar{K'}=K'$, therefore $K$ is sequentially compact $\Rightarrow$ compact.}
+Note that this is generally not true in arbitrary topological spaces.\\
+\defn{A family of sets $\mathcal{F}\subseteq\mathcal{P}(X)$ has the finite intersection property (FIP) if any finite intersection $\bigcap_{k=1}^n A_k\neq\emptyset$ for any $A_1,\cdots,A_n\in\mathcal{F}$.}
+\prop{A subspace $K\subseteq X$ of a topological space is compact $\Leftrightarrow$ every family $\mathcal{F}$ of closed subsets of $K$ with FIP has nontrivial intersection.}
+{If $K$ is compact, and the intersection of the closed sets in $\mathcal{F}$ is empty, then the union of their complements would contain the entire $K$ and therefore form an open cover. However, since $K$ is compact, that open cover would have a finite subcover, which, if we take another complement, would become a finite subset of $\mathcal{F}$ with an empty intersection, contradicting FIP.\\
+If every family of closed subsets that has FIP has nontrivial intersection, and $K$ is not compact, let $\{U_i\}_{i\in I}$ be an open cover of $K$ with no finite subcover, and let $\mathcal{F}=\{U^c_i\}_{i\in I}$. We have that $\mathcal{F}$ has FIP, therefore the intersection is non-empty. However, if we take another complement, we would have that the union of $\{U_i\}_{i\in I}$ is not the entire $K$, contradicting that this is an open cover.}
+\prop{(Heine-Borel Theorem) $K\subseteq\R^n$ is compact $\Leftrightarrow$ $K$ is closed and bounded}
+{By Bolzano-Weierstrass, for any sequence $(x_k)_{k\in\N}\subseteq K$ where $x_k=(x_k^{(1)},\cdots,x_k^{(n)})$, $\exists x\in\R^n$ s.t. $x_{k_j}\to x$.\\
+Since $K$ is closed, $x\in\bar{K}=K$, so $K$ is sequentially compact $\Rightarrow$ compact.\\
+If $K$ is compact, then $K$ is contained in a finite union of bounded balls \textbf{(this needs to be checked!!!)}.}
+For example, the sphere in $\R^n$: $\{(x_1,\cdots,x_n)\in\R^n:x_1^2+\cdots+x_n^2=1\}\subseteq\R^n$ is compact.\\
+\rmk{In general, compact $\Rightarrow$ closed and bounded, but the converse almost always fails.}
+\textbf{Jan. 9}\\
+\prop{Let $f:X\to Y$ be a continuous function of topological spaces. If $X$ is compact, then $f(X)$ is compact.}
+{Take any open cover $\{U_i\}_{i\in I}$ of $f(X)$ in $Y$. Then, $\{f^{-1}(U_i)\}_{i\in I}$ is an open cover of $X$. This has a finite subcover $\{f^{-1}(U_n)\}_{n\in\N}$ (Since $X$ is compact).\\
+Since $X=\bigcup_{n\in\N}f^{-1}(U_n)$, we have $f(X)=\bigcup_{n\in\N}U_n$.\\
+Therefore $f(X)$ is compact.}
+\prop{(Extreme Value Theorem) For $X$ compact topological space, any continuous function $f:X\to\R$ attains a global maximum/minimum on $X$.}
+{We have $f(X)$ compact. By Heines-Borel and that $f(X)\subseteq\R$, we have $f(X)$ is closed and bounded. So $\sup f(X)<\infty$ and $\inf f(X)>-\infty$. And since $f(X)$ is closed, $\sup f(X)$ and $\inf f(X)$ must be in $f(X)$ (and therefore attained).}
+Since the $n$-sphere $S^n$ is compact, any continuous $f:S^n\to\R$ attains a global maximum/minimum.\\
+\prop{The following are equivalent for metric spaces $X,Y$, some fixed $x\in X$, and $f:X\to Y$:\\
+(a) If $x_n\to x$ for some $(x_n)_{n\in\N}\subseteq X$, then $(f(x_n))_{n\in\N}\subseteq Y$ is such that $f(x_n)\to f(x)$.\\
+(b) $f$ is topologically continuous at $x$.\\
+(c) For all $\epsilon>0$, $\exists\delta>0$ depend on $x$ s.t. for some $y\in X$, if $d(x,y)<\delta$, then $d(f(x),f(y))<\epsilon$.}
+{(a)$\Rightarrow$(b): Suppose $f$ is not topologically continuous at $x_0$. Then, there exists a neighborhood $V$ of $f(x_0)$ s.t. $f^{-1}(V)$ not a neighborhood of $x_0$.\\
+We know that $B(f(x_0),\epsilon)\subseteq V$ for some $\epsilon>0$. This means we can select a sequence $x_n\in B(x_0,\frac{1}{n})\setminus f^{-1}(V)$ (note that we can always select an element, otherwise $V$ becomes a neighborhood of $x_0$) so that $x_n\to x_0$ but $d(f(x_n),f(x_0))\geq\epsilon\forall n\in\N$. This contradicts (a).\\
+(b)$\Rightarrow$(c): Let $V=B(f(x_0),\epsilon)$. So $\exists\delta>0$ s.t. $B(x_0,\delta)\subseteq f^{-1}(V)$ (since by (b) $f^{-1}(V)$ is a neighborhood of $x_0$). Thus, $d(x,x_0)<\delta\Rightarrow x\in f^{-1}(V)\Rightarrow f(x)\in V\Rightarrow d(f(x_0),f(x))<\epsilon$.\\
+(c)$\Rightarrow$(a): Let $\epsilon>0$. By (c) we have that $\exists\delta>0$ dependent on $x$ s.t. if $d(x_n,x)<\delta$ then $d(f(x_n),f(x))<\epsilon$. Since $x_n\to x$, $\exists N\in\N$ s.t. $d(x_n,x)<\delta\forall n\geq N$. Thus $d(f(x_n),f(x))<\epsilon\forall n\geq N$. Therefore, $f(x_n)\to f(x)$.}
+\defn{A function of metric spaces $f:X\to Y$ is called uniformly continuous if for all $\epsilon>0$, $\exists\delta>0$ s.t. for all $x,y\in X$, if $d(x,y)<\delta$ then $d(f(x),f(y))<\epsilon$.}
+\prop{The following are equivalent for $X$ totally bounded and a map $f:X\to Y$ between metric spaces:\\
+(a) $f$ is uniformly continuous.\\
+(b) If $(x_n)_{n\in\N}$ is Cauchy, then $(f(x_n))_{n\in\N}$ is Cauchy.}
+{(a)$\Rightarrow$(b): Since $f$ uniformly continuous, we have that $\forall\epsilon>0$, $\exists\delta>0$ s.t. $d(x,y)<\delta\Rightarrow d(f(x),f(y))<\epsilon\forall x,y\in X$.\\
+Since $(x_n)_{n\in\N}$ Cauchy, we have that $d(x_n,x_m)<\delta$ for large enough $n,m$. Therefore, $d(f(x_n),f(x_m))<\epsilon$ for large enough $n,m$. Thus, $(f(x_n))_{n\in\N}$ is Cauchy.\\
+(b)$\Rightarrow$(a): Suppose that $f$ is not uniformly continuous, therefore $\exists\epsilon>0$ and $(x_n)_{n\in\N}, (y_n)_{n\in\N}$ s.t. $d(x_n,y_n)\to 0$ yet $d(f(x_n),f(y_n))\geq\epsilon\forall n\in\N$.\\
+Since $X$ is totally bounded, we can find a Cauchy subsequence $(x_{n_k})_{k\in\N}$ and since $d(x_{n_k},y_{n_k})\to 0$, $(y_{n_k})_{k\in\N}$ is also Cauchy.\\
+Therefore we construct a new sequence $(x_{n_1},y_{n_1},x_{n_2},y_{n_2},\cdots)$. we note that this sequence is Cauchy since $(x_{n_k})$ and $(y_{n_k})$ both Cauchy and $d(x_{n_k},y_{n_k})\to 0$, but $d(f(x_{n_k}),f(y_{n_k}))\geq\epsilon\forall k\in\N$, which is a contradiction to (b).}
+\defn{Given a metric space $X$, its completion $\bar{X}$ is the set of Cauchy sequences $(x_n)_{n\in\N}$ in $X$, modulo the equivalence relation: $(x_n)_n~(y_n)_n$ if and only if $\forall\epsilon>0$, $d(x_n,y_m)<\epsilon$ for large enough $n,m$. Then, the metric on $\bar{X}$ can be given by $d((x_n)_n,(y_n)_n)=\lim_{n\to\infty}d(x_n,y_n)$. This limit exists because $|d(x_n,y_n)-d(x_m,y_m)|<\epsilon$ for large enough $n,m$ and that $\R$ is complete.}
+Then $X$ is a subspace of $\bar{X}$, with $x\in X\Rightarrow\bar{x}\in\bar{X}$, where $\bar{x}$ is the equivalence class of sequences converging to $x\in X$.\\
+\prop{The completion $\bar{X}$ of any metric space $X$ is complete.}
+{Take sequences $X_1=(x^{(1)}_n)_{n\in\N},X_2=(x^{(2)}_n)_{n\in\N},\cdots$ in $X$, and suppose they are Cauchy in $\bar{X}$. That is, $\lim_{n\to\infty}d(x^{(m)}_n,x^{(m')}_n)<\epsilon$ for $m,m'$ large enough. For each $k\in\N$, select $N_k$ s.t. $d(x^{(k)}_j,x^{(k)}_l)<\frac{1}{k}$ for $j,l\geq N_k$, select $y_k=x^k_p$ for $p\geq N_k$.\\
+Let $Y=(y_k)_{k\in\N}$. We will define $Y_k=(y_k,y_k,\cdots)$. First, we note that $d(X_k,Y_k)\leq\frac{1}{k}\forall k\in\N$ since $d(X_k,Y_k)=\lim_{n\to\infty}d(x^{(k)}_n,y^{(k)}_n)$.\\
+Next we claim that $Y$ is Cauchy. By triangle inequality, we have $d(y_j,y_l)\leq d(y_j,x^{(j)}_p)+d(x^{(j)}_p,x^{(l)}_p)+d(x^{(l)}_p,y_l)$. We can select $M$ s.t. for $j,l\geq M$, the first and third terms are $<\epsilon$ for large enough $p$. Moreover, since $(x_k)_{k\in\N}$ is Cauchy, the second term is $<\epsilon$ for large enough $p$. So $(y_k)_{k\in\N}$ is Cauchy.\\
+Now, since $d(X_k,Y_k)\to 0$ and $Y_k\to Y$, we have that $X_k\to Y\in\bar{X}$.}
+Given $X\subseteq\bar{X}$, the embedding of $X$ in $\bar{X}$ is unique.\\
+For example, the completion of $\Q$ is identical to $\R$ as a metric space.\\
+\thm{(Corollary) For some $f:X\to Y$ with metric spaces $X,Y$, if $X$ is totally bounded, $Y$ is complete, and $f$ is uniformly continuous, then $f$ extends uniquely to $f:\bar{X}\to Y$ where $f((x_n)_{n\in\N})=\lim_{n\to\infty}f(x_n)$.}
+\prop{If $f:X\to Y$ continuous and $X$ is compact, then $f$ is uniformly continuous.}
+{If $(x_n)_{n\in\N}$ is Cauchy in $X$ then $x_n\to x$ for some $x\in X$, then $f(x_n)\to f(x)$. That is, $(f(x_n))_{n\to\infty}$ is Cauchy.}
+For example, any uniformly continuous map $f:\Q\cap[0,1]\to\R$ extends continuously to a uniform continuous map $f:[0,1]\to\R$.\\
+\textbf{Jan. 12}\\
+\defn{For $f:\R\to\R$ and $x_0\in\R$, the following are equal:
+(a) There exists $L\in\R$ such that for all $\epsilon>0$, there exists $\delta>0$ such that for all $x\neq x_0$, $|x-x_0|<\delta\Rightarrow|f(x)-L|<\epsilon$.\\
+(b) For all sequences $(x_n)_{n\in\N}$, $x_n\neq x_0\forall n\in\N$, if $x_n\to x_0$, then $f(x_n)\to L$.\\
+If either holds, we say that the limit of $f(x)$ equals $L$ as $x$ approaches $x_0$, and write $\lim_{x\to x_0}f(x)=L$.}
+\prop{(a) and (b) are equivalent.}
+{(a)$\Rightarrow$(b): Suppose (b) is false, then there exists a sequence $(x_n)_{n\in\N}$ with $x_n\to x_0$, but $f(x_n)\geq L+\epsilon$ for infinitely many $n$. This implies that there is no $\delta>0$ for this $\epsilon$ s.t. $|f(x)-L|<\epsilon$ for all $x$ near $x_0$.\\
+(b)$\Rightarrow$(a): If (a) false, there exists $\epsilon>0$ s.t. $\forall\delta_n=\frac{1}{n}$, $\exists x_n\in(x_0-\delta_n,x_0+\delta_n)$ s.t. $|f(x_n)-L|\geq\epsilon$ But then clearly $f(x_n)$ does not $\to L$.}
+\rmk{If one restrict to $x<x_0$ or $x>x_0$ in (a), we get the definition of left/right limits $\lim_{x\to x_0^-}f(x)$ and $\lim_{x\to x_0^+}f(x)$.}
+\rmk{If one takes $\limsup_{n\to\infty}f(x_n)$ or $\liminf_{n\to\infty}f(x_n)$ in (b) (these always exist), then we get the definition of $\limsup_{x\to x_0}f(x)$ and $\liminf_{x\to x_0}f(x)$}
+\defn{The oscillation of $f:\R\to\R$ at $x=c$ is $\text{osc}(f)(c)=\lim_{\epsilon\to 0}\sup_{x,y\in(c-\epsilon,c+\epsilon)}|f(x)-f(y)|$.}
+For example, $\text{osc}(\sin(\frac{1}{x}))(0)=2$.\\
+\rmk{The actual value of the function at the point is included in the oscillation, but not in the limit definition.}
+\prop{$f$ is continuous at $x$ $\Leftrightarrow$ $\text{osc}(f)(x)=0$.}
+{Unravel definition of $\text{osc}(f)$.\\
+We get that $\text{osc}(f)(x)=0\Leftrightarrow$ for all $\epsilon>0$, $\exists\delta>0$ s.t. $|x-y|<\delta\Rightarrow|f(x)-f(y)|<\epsilon$ $\Leftrightarrow$ $f$ is continuous at $x$.}
+\defn{We say that a function $f:\R\to\R$ is differentiable at $x_0\in\R$ if $f'(x_0)=\lim_{h\to 0}\frac{f(x_0+h)-f(x_0)}{h}=\lim_{x\to x_0}\frac{f(x)-f(x_0)}{x-x_0}$ exists.\\
+$f'(x_0)$ is the derivative of $f(x)$ at $x_0$.}
+\prop{If $f$ is differentiable at $x_0$, then $f$ is continuous at $x_0$.}
+{If $f$ is differentiable at $x_0$, we have that for $L=f'(x_0)$, $|\frac{f(x_0+h)-f(x_0)}{h}-L|<\epsilon$ for $|h|<\delta$.\\
+Multiply by $|h|$ on both sides, we have $||f(x_0+h)-f(x_0)|-|Lh||\leq |f(x_0+h)-f(x_0)-Lh|<\epsilon|h|$.\\
+Therefore, $|f(x_0+h)-f(x_0)|\leq|L||h|+\epsilon|h|=(|L|+\epsilon)|h|$. As $h\to 0$, the right hand side also $\to 0$, therefore $\lim_{h\to 0}f(x_0+h)=f(x_0)\Leftrightarrow$ $f$ is continuous at $x_0$.}
+\prop{Suppose $f,g:\R\to\R$ differentiable. Then,
+(a) $f+g$ differentiable, $(f+g)'=f'+g',(cf)'=cf'$.\\
+(b) $fg$ is differentiable, $(fg)'=f'g+fg'$.\\
+(c) $\frac{f}{g}$ is differentiable when $g(x)\neq 0$ with $(\frac{f}{g})'=\frac{gf'-fg'}{g^2}$.}
+{(a) Exercise\\
+(b) $\lim_{h\to 0}\frac{f(x+h)g(x+h)-f(x)g(x)}{h}=\lim_{h\to 0}\frac{(f(x+h)-f(x)g(x+h)+(g(x+h)-g(x)f(x))}{h}$.\\
+Which is equal to $f'(x)\lim_{h\to 0}g(x+h)+g'(x)f(x)=f'(x)g(x)+f(x)g'(x)$.\\
+(c) Apply (b) to $f$ and $\frac{1}{g}$.}
+\prop{(Chain Rule) Let $f,g:\R\to\R$, $f$ differentiable at $g(c)=d$ and $g$ is differentiable at $c$.\\
+Then the composite $f\circ g$ would be differentiable at $c$ and $(f\circ g)'(c)=f'(g(c))g'(c)$.}
+{$g(c)=d,g(c+h)=d+h'$. Since $g$ is continuous at $c$, $h\to 0\Rightarrow h'\to 0$.\\
+$(f\circ g)'(c)=\lim_{h\to 0}\frac{f(g(c+h))-f(g(c))}{h}=\lim_{h\to 0}\frac{f(d+h')-f(d)}{h'}\cdot\frac{(d+h')-d}{h}$.\\
+Which is equal to $\lim_{h\to 0}\frac{f(d+h')-f(d)}{h'}\lim_{h\to 0}\frac{g(c+h)-g(c)}{h}=f'(d)g'(c)=f'(g(c))g'(c)$.}
+\defn{We say that $f:[a,b]\to\R$ satisfies the intermediate value property (IVP) if for all $c\in[f(a),f(b)],\exists x\in[a,b]$ s.t. $f(x)=c$.}
+\prop{(Intermediate Value Theorem) If $f:[a,b]\to\R$ is continuous, then $f$ satisfies the intermediate value theorem.}
+{Without loss of generality, assume $f(a)<f(b)$. take $c\in(f(a),f(b))$. Set $x_0=\sup\{x\in[a,b]:f(y)<c,y\in[a,x]\}$.\\
+Note that $x_0\neg b$ by continuity of $f$ at $b$ and $f(b)>c$ ($\epsilon=\frac{f(b)-c}{2}$).\\
+We claim that $f(x_0)=c$. Indeed, $\limsup_{x\to x_0^-}f(x)\leq c$ and $\limsup_{x\to x_0^+}f(x)\geq c$.\\
+So $\limsup_{x\to x_0}f(x)=c$, so by continuity of $f$, $\limsup_{x\to x_0}f(x)=\lim_{x\to x_0}f(x)=f(x_0)=c$.}
+\prop{(Rolle's Theorem) If $f:[a,b]\to\R$ is continuous, differentiable on $(a,b)$, and $f(a)=f(b)$, then $\exists x_0\in(a,b)$ s.t. $f'(x_0)=0$.}
+{Unless $f$ is constant, by Extreme Value Theorem $f$ attains (without loss of generality) a global max at some $x=x_0$ on $(a,b)$.\\
+Then, $f(x_0+h)\leq f(x_0)$ for $h>0$, and $f(x_0-h)\geq f(x_0)$ for $h>0$.\\
+So, $\lim_{h\to 0^+}\frac{f(x_0+h)-f(x_0)}{h}\leq 0$ and $\lim_{h\to 0^+}\frac{f(x_0-h)-f(x_0)}{h}\geq 0$.\\
+So $\lim_{h\to 0}\frac{f(x_0+h)-f(x_0)}{h}=0=f'(x_0)$.}
+\prop{(Mean Value Theorem) If $f:[a,b]\to\R$ is continuous on $[a,b]$ and differentiable on $(a,b)$, then $\exists c\in(a,b)$ s.t. $\frac{f(b)-f(a)}{b-a}=f'(c)$.}
+{Apply Rolle's Theorem to $g(x)=f(x)-\frac{f(b)-f(a)}{b-a}(x-a)$. We have that $g(a)=g(b)=f(a)$.\\
+So, $\exists c\in(a,b)$ s.t. $g'(c)=f'(c)-\frac{f(b)-f(a)}{b-a}=0\Rightarrow f'(c)=\frac{f(b)-f(a)}{b-a}$.}
+\prop{(Darboux's Theorem) If $f:(a,b)\to\R$ is differentiable, then $f'$ satisfies the Intermediate Value Theorem.}
+{For $[c,d]\subseteq(a,b)$. Without loss of generality, assume $f'(c)<f'(d)$ with $r\in(f'(c),f'(d))$.\\
+Define $g(x)=f(x)-rx$ which is differentiable. $g'(x)=f'(x)-r$, so $g'(c)<0$ and $g'(d)>0$. This implies that the global min of $g$ is attained in the interior $(c,d)\subseteq[c,d]$.\\
+Call $x_0$ the global min of $g$ in $(c,d)$. By the argument of Rolle's theorem, $g'(x_0)=0\Rightarrow f'(x_0)=r\Rightarrow$ $f'$ has IVP.}
+\rmk{The derivative of a differentiable function $f:\R\to\R$ can be wild.}
+For example, there are functions whose derivative exists everywhere, but is discontinuous at uncountably many points.\\
+\prop{(1D Inverse Function Theorem) Let $f:\R\to\R$ be continuously differentiable with $f(c)=d$ and $f'(c)\neq 0$.\\
+Then, $\exists$ open intervals $I,J$ s.t. $c\in I,d\in J$ s.t. $f:I\to J$ is a $C^1$-diffeomorphism, i.e. $f:I\to J$ is bijective, and $f^{-1}:J\to I$ is continuously differentiable.\\
+Moreover, $(f^{-1})'(d)=\frac{1}{f(c)}$.}
+{First we WTS injectivity. If $f$ is not injective on any interval around $c$, we can construct $(x_n)_n$, $(y_n)_n$ inductively such that $x_n\to c$, $y_n\to c$ and $f(x_n)=f(y_n)$.\\
+By MVT, $\frac{f(x_n)-f(y_n)}{x_n-y_n}=f'(z_n)$ for $z_n\in(x_n,y_n)$, so $z_n\to c$.\\
+Therefore by continuity of $f'$, $f'(z_n)\to f'(c)=0$, leading to a contradiction.\\
+So $f:I\to f(I)$ bijective, where $c\in I$.\\
+Let $J=f(I)$. $J$ is an interval since $I$ is interval and $f$ continuous.\\
+It remains to show $g=f^{-1}$ is continuously differentiable.\\
+$g(d+h')=c+h$, where $h\to 0\Leftrightarrow h'\to 0$.\\
+$g'(d)=(f^{-1})'(d)=\lim_{h'\to 0}\frac{g(d+h')-g(d)}{(d+h')-d}=\lim_{h'\to 0}\frac{c+h-c}{f+h-f(c)}=\frac{1}{\lim_{h\to 0}\frac{f(c+h)-f(c)}{h}}=\frac{1}{f'(c)}$.}
+We haven't shown that $g$ is continuously differentiable. We will do this in the next lecture.\\
+\textbf{Jan. 14}\\
+\prop{(1D Inverse Function Theorem, continued)}
+{We still want to show that $g$ is continuously differentiable.\\
+By shrinking $I$ if necessary and invoking the continuity of $f$ (If $f'(c)\neq 0$ then there exists some interval around $c$ s.t. $f(x)\neq 0$ on the interval), we may assume that $f(x)\neq 0\forall x\in I$.\\
+Now, let $x$ be an arbitrary element in $I$, and let $y=f(x)\in J$. We have that $f(x+h)=y+h'$, with $h\to 0\Leftrightarrow h'\to 0$.\\
+So, $g'(y)=\lim_{h'\to 0}\frac{g(y+h')-g(y)}{y+h'-y}=\lim_{h\to 0}\frac{x+h-x}{f(x+h)-f(x)}=\lim_{h\to 0}\frac{1}{\frac{f(x+h)-f(x)}{h}}=\frac{1}{f'(x)}$.\\
+Since $g'$ is the reciprocal of a continuous, non-zero function $f'$, we have that $g'$ is also continuous.}
+\prop{(L'Hopital's Rule) Let $f,g:(a,b)\to\R$ be two continuous functions.\\
+Suppose that $f,g$ are differentiable on $(a,b)$, except possibly at $c$.\\
+Suppose that $\lim_{x\to c}f(x)=\lim_{x\to c}g(x)=0$, and that $\lim_{x\to c}\frac{f'(x)}{g'(x)}$ exists.\\
+Also suppose that $g'(x)\neq 0$ on an open punctured interval $I\setminus\{c\}$ around $c$.\\
+Then, $\lim_{x\to c}\frac{f(x)}{g(x)}$ exists and $\lim_{x\to c}\frac{f(x)}{g(x)}=\lim_{x\to c}\frac{f'(x)}{g'(x)}$.}
+{First, notice that $g$ must also be non-zero on some punctured interval $I\setminus\{c\}$, otherwise we can construct a sequence $(x_n)_{n\in\N}$, where without loss of generality $x_n<c$, $x_n\to c$ and $g(x_n)=0$. Then by MVT, $\frac{g(x_{n+1})-g(x_n)}{x_{n+1}-x_n}=g'(z_n)=0$, where $z_n\in(x_n,x_{n+1})$. So we have that $z_n\to c$, which contradicts the assumption that $g'(x)$ is non-zero near $c$.\\
+\underline{Lemma} (Generalized Mean Value Theorem) Let $f,g:[a,b]\to\R$ be continuous functions for $a<b$, that are differentiable on $(a,b)$. Assume that $g'(x)\neq 0$ on $(a,b)$ and $g(a)\neq g(b)$. Then, there exists $c\in(a,b)$ s.t. $\frac{f(b)-f(a)}{g(b)-g(a)}=\frac{f'(c)}{g'(c)}$.\\
+\underline{Proof} Homework Exercise.\\
+Using generalized MVT (and recall that $\lim_{x\to c}f(x)=\lim_{x\to c}g(x)=0$), we have:\\
+$\lim_{x\to c}\frac{f(x)}{g(x)}=\lim_{x\to c}\frac{f(x)-f(c)}{g(x)-g(c)}=\lim_{x\to c}\frac{f'(d)}{g'(d)}$ for some $d\in(c,x)$.\\
+As $x\to c$, it is immediate that $d\to c$, therefore $\lim_{x\to c}\frac{f(x)}{g(x)}=\lim_{x\to c}\frac{f'(x)}{g'(x)}$.}
+\rmk{The assumption $g(x)\neq 0$ near $c$ is crucial and often missed, as there is the counterexample $f(x)=x+\sin x\cos x$, $g(x)=(x+\sin x\cos x)e^{\sin x}$ as $x\to\infty$, where $g'(x)$ vanishes periodically.}
+\rmk{A similar method works for $\frac{\infty}{\infty}$ by considering $\frac{1}{f},\frac{1}{g}$. Can generalize to other indeterminate forms.}
+\defn{A partition $P$ of $[a,b]$ is a finite collection of points $a=x_0<x_1<x_2<\cdots<x_{n+1}=b$. We write $\Delta x_k=x_{k+1}-x_k$.\\
+The mesh of a partition $P$ is $\mesh P=\max_{0\leq k\leq n}|\Delta x_k|$.\\
+A refinement $P'$ of a partition $P$ is a partition that includes all points of $P$ and maybe other points.\\
+We write $P\subseteq P'$.\\
+The common refinement of partitions $P,Q$ of $[a,b]$ is $P\cup Q$ as a set.}
+\rmk{Clearly, $\mesh(P\cup Q)\leq\min\{\mesh P,\mesh Q\}$.}
+\defn{Given $f:[a,b]\to\R$ be bounded and let $P$ be a partition of $[a,b]$.\\
+We define the lower sum $L(f,P)$ and upper sum $U(f,P)$ as follows:\\
+$U(f,P)=\sum_{k=0}^n(\sup_{[x_k,x_{k+1}]}f(x))\Delta x_k$, $L(f,P)=\sum_{k=0}^n(\inf_{[x_k,x_{k+1}]}f(x))\Delta x_k$.}
+\prop{If $P\subseteq P'$, then $L(f,P)\leq L(f,P')\leq U(f,P')\leq U(f,P)$.}
+{We label the inequalities as (1), (2) and (3) respectively.\\
+(2) follows immediately from $\inf_{[x_k,x_{k+1}]}f(x)\leq\sup_{[x_k,x_{k+1}]}f(x)$.\\
+(1) and (3) follow from that if $[y_j,y_{j+1}]\subseteq[x_k,x_{k+1}]$, then $\inf_{[y_j,y_{j+1}]}f(x)\geq\inf_{[x_k,x_{k+1}]}f(x)$ and $\sup_{[y_j,y_{j+1}]}f(x)\leq\sup_{[x_k,x_{k+1}]}f(x)$.\\
+Therefore, $L(f,P)=\sum_{k=0}^n(\inf_{[x_k,x_{k+1}]}f(x))\Delta x_k\leq\sum_{j=0}^m(\inf_{[y_j,y_{j+1}]}f(x))\Delta y_j=L(f,P')$.\\
+The $U(f,P)\geq U(f,P')$ case follows analogously.}
+\defn{The lower/upper Darboux integrals of a bounded $f:[a,b]\to\R$ are:\\
+$\overline{I}(f)=\inf_PU(f,P),\underline{I}(f)=\sup_PL(f,P)$, where inf,sup are taken over all partitions of $[a,b]$.\\
+We say that $f:[a,b]\to\R$ is Darboux integrable if the upper and lower integrals of $f$ are equal, in which case the Darboux integral is $\int^b_af(x)dx=\overline{I}(f)=\underline{I}(f)=I(f)$.}
+\prop{(Lebesgue Criterion for Darboux Integrability) A bounded $f:[a,b]\to\R$ is Darboux Integrable if and only if $\forall\epsilon>0$, $\exists$ partition $P$ of $[a,b]$ s.t. $U(f,P)-L(f,P)<\epsilon$.}
+{If $f$ is Darboux integrable, $\sup_P L(f,P)=\inf_P U(f,P)$, then there exists partitions $P,P'$ where $|U(f,P)-L(f,P')|<\epsilon$.\\
+Take the common refinement $P\cup P'$, we have $U(f,P\cup P')-L(f,P\cup P')\leq U(f,P)-L(f,P')<\epsilon$.\\
+Conversely, if $U(f,P)-L(f,P)<\epsilon$ for some partition $P$ depending on $\epsilon$ for every $\epsilon>0$, clearly $\sup L(f,P)=\inf U(f,P)\Leftrightarrow\overline{I}(f)=\underline{I}(f)$.}
+\prop{A bounded function $f:[a,b]\to\R$ is Darboux integrable if and only if for all $\epsilon>0$, there exists $\delta>0$ s.t. all partitions $P$ of $[a,b]$ s.t. $\mesh P<\delta$ have $U(f,P)-L(f,P)<\epsilon$.}
+{If the mesh condition holds, clearly $\sup_PL(f,P)=\inf_PU(f,P)$, the above argument immediately follows.\\
+Conversely, suppose $f$ is Darboux integrable.\\
+\underline{Lemma} If $P,Q$ are two partitions of $[a,b]$ s.t. $\mesh Q$ is less than or equal to the length of any subinterval in $P$, then $U(f,Q)-L(f,Q)\leq 3(U(f,P)-L(f,P))$.\\
+\underline{Proof} By the assumption, the sum of lengths of any intervals in $Q$ covering any fixed interval in $P$ is at most $I+2I=3I$, that is, $\sum_{j\in J_i}\Delta y_j\leq 3\Delta x_i$.\\
+Moreover, by the triangle inequality, the sum - $\sum\sup f-\inf f$ over all intervals $I_j$ in $P$ covering some fixed interval $J$ with index $j$ in $Q$ - bounds $\sup_Jf-\inf_Jf$ from above, that is, $\sup_jf-\inf_jf\leq\sum_{i\in I_j}\sup_if-\inf_if$.\\
+Since summing over intervals $I_j$ in $P$ (with index $i$) covering each fixed interval $J$ with index $j$ for all $J$ in $Q$ is the same as summing over all intervals $J_i$ in $Q$ (with index $j$) covering each fixed interval $I$ with index $i$ for all $I\in P$, on thus gets $U(f,Q)-L(f,Q)=\sum_j(\sup_jf-\inf_jf)\Delta y_j\leq\sum_j\sum_{i\in I_j}(\sup_if-\inf_if)\Delta y_j=\sum_i\sum_{j\in J_i}(\sup_if-\inf_if)\Delta y_j=\sum_i(\sup_if-\inf_if)\sum_{j\in J_i}\Delta y_j\leq 3\sum_i(\sup_if-\inf_if)\Delta x_i=3(U(f,P)-L(f,P))$.\\
+Now, if $f$ is Darboux integrable and $U(f,Q)-L(f,Q)<\epsilon$, for any partition $Q$ with $\mesh Q$ less than the length of each subinterval in $P$ (call the min of these lengths $\delta>0$), we get that $\mesh Q\Rightarrow U(f,Q)-L(f,Q)\leq 3(U(f,P)-L(f,P))<3\epsilon$.}
+\defn{A tagged partition $P^*$ is a partition with a choice of point $x_k^*$ in each subinterval.}
+\defn{A bounded $f:[a,b]\to\R$ is Riemann integrable if $\lim_{\mesh P\to 0}\sum_{x_i\in P}f(x_i^*)\Delta x_i$ exists, in which case we say it is equal to $\int^b_af(x)dx$, the Riemann integral of $f$ on $[a,b]$.}
+\prop{$f$ is Riemann integrable $\Leftrightarrow$ $f$ is Darboux integrable, and the value of the two integrals coincide.}
+{If $f$ is Riemann integrable, for any $\epsilon>0$, we can take $\delta>0$ s.t. for all partitions $Q$ of $[a,b]$ s.t. $\mesh Q<\delta$, and $Q^*,Q^{**}$ being any two tagged partition from $Q$:\\
+$|\sum_{x_i^*\in Q^*}f(x_i^*)\Delta x_i-\sum_{x_i^{**}\in Q^{**}}f(x_i^{**})\Delta x_i|<\epsilon$.\\
+Since we are free to choose the tagging, we may approximate $\sup f$ and $\inf f$ on the subintervals by tagging. That is, $f(x_i^*)\leq\inf f+\epsilon$ and $f(x_i^{**})\geq\sup f-\epsilon$. This way we would have $|U(f,Q)-L(f,Q)-\sum_{x_i\in Q}(f(x_i^{**})-f(x_i^*))\Delta x_i|=|(U(f,Q)-\sum_{x_i\in Q}f(x^{**})\Delta x_i)+(\sum_{x_i\in Q}f(x^*)\Delta x_i-L(f,Q))|$.\\
+The two parts of this sum are, by definition of each individual $x_i^*,x_i^{**}$, $\leq\epsilon\sum_{x_i\in Q}\Delta x_i=\epsilon(b-a)$.\\
+So $|U(f,Q)-L(f,Q)-\sum_{x_i\in Q}(f(x_i^{**})-f(x_i^*))\Delta x_i|\leq 2\epsilon(b-a)$. And since the third term in this sum is, as derived, $<\epsilon$, we have that $U(f,Q)-L(f,Q)<\epsilon+2\epsilon(b-a)=\epsilon(1+2(b-a))$.\\
+This can be arbitrarily small, therefore $f$ is Darboux integrable.\\
+Conversely, $f(x^*)-f(x^{**})\leq\sup_{[x_i,x_{i+1}]}f-\inf_{[x_i,x_{i+1}]}f$, with $x^*,x^{**}\in[x_i,x_{i+1}]$ being any two taggings.\\
+Thus, we select a partition $P$ of $[a,b]$ s.t. $\mesh P$ is small enough so that $U(f,P)-L(f,P)<\epsilon$ (this is possible due to the mesh condition of Darboux integrability).\\
+Therefore for any tagging $P^*,P^{**}$, we have that $|\sum_{x_i\in P}(f(x_i^*)-f(x_i^{**}))\Delta x_i|\leq U(f,P)-L(f,P)<\epsilon$.\\
+Since this can be arbitrarily small, we have that $f$ is Riemann integrable.\\
+We also have that given $f$ is both Riemann and Darboux integrable, the Riemann integral is "squeezed" by the upper and lower sums to the Darboux integral, therefore the two values coincide.}
+\textbf{Jan. 16}\\
+\rmk{Darboux integral can be thought of as approximating $f:[a,b]\to\R$ by "simple functions" of the form $\sum_{k=0}^n\chi_{I_k}(x)$, where given $A\subseteq\R$, the characteristic function:\\
+$\chi_A(x)=\begin{cases}1:x\in A\\0:x\notin A\end{cases}$, and $I_k$ being the subintervals in our partition.\\
+Namely, $f$ is Darboux integrable $\Leftrightarrow\forall\epsilon>0$, there exists simple functions $h_1,h_2$ s.t. $h_1\leq f\leq h_2$ and $\int^b_a(h_2-h_1)dx<\epsilon$.}
+\prop{(a) If $f,g:[a,b]\to\R$ are integrable, $c\in\R$, then $f+g$ and $cf$ are integrable, with $\intab cf(x)dx=c\intab f(x)dx$ and $\intab (f(x)+g(x))dx=\intab f(x)dx+\intab g(x)dx$.\\
+(b) If $f,g:[a,b]\to\R$ integrable and $f\leq g$, then $\intab f(x)dx\leq\intab g(x)dx$.\\
+(c) (Triangle Inequality) If $f:[a,b]\to\R$ are integrable, then $|\intab f(x)dx|\leq\intab|f(x)|dx$.\\
+(d) If $f:[a,b]\to\R$ is continuous, then it is integrable.\\
+(e) If $f:[a,c]\to\R$ is integrable and $a<b<c$, then $\int_a^cf(x)dx=\intab f(x)dx+\int_b^cf(x)dx$.\\
+(f) If $f,g:[a,b]\to\R$ is integrable, then $fg$ is integrable.}
+{(a) $\intab cf(x)dx=c\intab f(x)dx$ is left as exercise.\\
+For $f+g$, use Darboux for integrability, and note that:\\
+$\sup(f+g)-\inf(f+g)\leq\sup f+\sup g-(\inf f+\inf g)=(\sup f-\inf f)+(\sup g-\inf g)$.\\
+This easily implies that $U(f+g,P)-L(f+g,P)\leq U(f,P)-L(f,P)+U(g,P)-L(g,P)<2\epsilon$, which can be arbitrarily small, implying that $f+g$ is integrable.\\
+Also, since $\inf f+\inf g\leq\inf(f+g)$ and $\sup(f+g)\leq\sup f+\sup g$, we have that $L(f,P)+L(g,P)\leq L(f+g,P)\leq U(f+g,P)\leq U(f,P)+U(g,P)$.\\
+We have that $L(f,P)$ and $U(f,P)$, as well as $L(g,P)$ and $U(g,P)$, get arbitrarily close to each other, therefore by limiting behavior we have that $\overline{I}(f+g)=\underline{I}(f+g)=I(f)+I(g)$.\\
+Which gives us $\intab f(x)+g(x)dx=\intab f(x)dx+\intab g(x)dx$.\\
+(b) Use Riemann: $\intab f(x)dx=\lim_{\mesh P\to 0}\sum_{x_i\in P}f(x_i^*)\Delta x_i\leq\lim_{\mesh P\to 0}\sum_{x_i\in P}g(x_i^*)\Delta x_i=\intab g(x)dx$.\\
+(c) Use Riemann and regular triangle inequality:\\
+$|\sum_{x_i\in P}f(x_i^*)\Delta x_i|\leq\sum_{x_i\in P}|f(x_i^*)|\Delta x_i$.\\
+Take the limit $\mesh P\to 0$, we have $|\intab f(x)dx|\leq\intab|f(x)|dx$.\\
+To show that $|f|$ is integrable, use Darboux definition (left as exercise).\\
+(d) Use Darboux: $U(f,P)-L(f,P)=\sum_{x_i\in P}(\sup_{[x_i,x_{i+1}]}f(x)-\inf_{[x_i,x_{i+1}]}f(x))\Delta x_i$.\\
+Since $f$ is continuous on a compact set, it is uniformly continuous, so $\forall\epsilon>0$, $\exists\delta>0$ s.t. $|x-y|<\delta\Rightarrow|f(x)-f(y)|<\epsilon$.\\
+Therefore, $\sup_If-\inf_If\leq\epsilon$ for any interval $I$ with length less than $\delta$.\\
+So if we take any partition $P$ with $\mesh P<\delta$, then $U(f,P)-L(f,P)\leq\epsilon\sum\Delta x_i=\epsilon(b-a)$.\\
+This can be arbitrarily small, so $f$ is integrable.\\
+(e) This follows from the fact that a partition of $[a,c]$ induces partitions of $[a,b]$ and $[b,c]$.\\
+The details are left as exercise.\\
+(f) Left as exercise.}
+\defn{A function $f:[a,\infty)$ is improper Riemann integrable if it is integrable on any closed, bounded subinterval of $[a,\infty)$ and $\lim_{b\to\infty}\intab f(x)dx$ exists, in which case $\int_a^\infty f(x)dx=\lim_{b\to\infty}\intab f(x)dx$.}
+Similarly, we can define improper integrals for functions with asymptotes at real values.\\
+For example, $\int_0^1\frac{1}{\sqrt{x}}dx=\lim_{a\to 0^+}\int_a^1\frac{1}{\sqrt{x}}dx$, if this limit exists.\\
+\prop{(Integral MVT) If $f:[a,b]\to\R$ is continuous, then $\exists c\in[a,b]$ s.t. $\frac{1}{b-a}\intab f(x)dx=f(c)$.}
+{$\inf_{[a,b]}f\leq\frac{1}{b-a}\intab f(x)dx\leq\sup_{[a,b]}f$ since $\inf_{[a,b]}f\leq f(x)\leq\sup_{[a,b]}f$.\\
+Since $f$ is continuous, IVP holds for $f(c)=\frac{1}{b-a}\intab f(x)dx$ for $c\in[a',b']$, where $f(a')=\inf_{[a,b]}f$ and $f(b')=\sup_{[a,b]}f$, therefore $[a',b']\subseteq[a,b]$.}
+\prop{(Integral Test) If $f:[1,\infty)\to(0,\infty)$ is a monotonically decreasing function (that is, for $x\leq y$, $f(x)\geq f(y)$), then $\sum_{n=1}^\infty$ converges if and only if $\int_1^\infty f(x)dx$ converges.}
+{Monotonically decreasing $\Rightarrow$ integrable (left as exercise).\\
+By lower and upper Riemann sums, we get $\sum_{n=2}^N f(x)\leq\int_1^N f(x)dx\leq\sum_{n=1}^N f(x)$.\\
+Taking $n\to\infty$ yields the desired result.}
+\thm{(Corollary) For $p>0$, $\int_1^\infty\frac{1}{x^p}dx<\infty\Leftrightarrow p>1$, so $\sum_{n=1}^\infty\frac{1}{x^p}$ converges if and only if $p>1$.}
+\prop{(Lebesgue Criterion for Riemann Integrability) A bounded function $f:[a,b]\to\R$ is integrable if and only if $\forall\epsilon>0$, there exists a countable collection $(I_n)_{n\in\N}$ of open intervals that cover all the points of discontinuity of $f$ and the sum of length of all the integrals is less than $\epsilon$.}
+{($\Leftarrow$) Let us call the points of discontinuity of $f$ "bad", and the points of continuity "good". We also call any interval that contains any "bad" points as "bad", otherwise it is a "good" interval.\\
+Suppose that bad points can be covered by countably many open intervals of total length $<\epsilon$. Recall that $f$ is discontinuous at $x\Leftrightarrow \osc(f)(x)> 0$.\\
+Fix $\alpha>0$, and note that $\{x:\osc(f)(x)<\alpha\}$ is open.\\
+Thus, the complement, $\{x:\osc(f)(x)\geq\alpha\}$ is closed, and since it is also bounded, it is compact.\\
+Notice that $(I_k)_{k\in\N}$ is an open cover of this set. By compactness, there exists a finite subcover $(I_{k_n})_n$ with total length $<\epsilon$.\\
+On the good intervals, we get that $f$ is continuous. By making these intervals closed, we get that $f$ is a continuous function on a compact set (the finite union of closed intervals is closed) and therefore uniformly continuous.\\
+Now, for any $\epsilon>0$, pick the countable cover, and pick the finite subcover, and extend it to a partition by including the endpoints of the intervals. Then,\\
+$U(f,P)-L(f,P)=\sum(\sup f-\inf f)\Delta x_i=\sum_{\text{good}}(\sup f-\inf f)\Delta x_i+\sum_{\text{bad}}(\sup f-\inf f)\Delta x_i\leq\epsilon\sum_{\text{good}}\Delta x_i+M\sum_{\text{good}}\Delta x_i$, where $M=\sup_{[a,b]}f-\inf_{[a,b]}f$.\\
+This is then $<\epsilon(b-a)+M\epsilon=\epsilon(M+b-a)$. Therefore $f$ is integrable.\\
+(Note) We really want an open cover of $X=\{x:\osc(f)(x)>0\}$ but have covers of $\{x:\osc(f)(x)>0\}$.\\
+We can take the union of covers for $\alpha_n=\frac{1}{n}$ for all $n$.\\
+We also want $X$ to be compact (?).\\
+($\Rightarrow$) Suppose, for the sake of contradiction, that the bad points cannot be covered by countably many integrals with total length arbitrarily small. We claim that for some $\epsilon>0$, the set $\{x:\osc(f)(x)>\epsilon\}$ cannot be covered by countable union of intervals of arbitrarily small length.\\
+If not, taking union of covers for $\epsilon_n=\frac{1}{n}$ for all $n$ with the total length of the $n$-th cover being $\frac{\delta}{2^n}$ for some $\delta>0$.\\
+$\{x:\osc(f)(x)\geq\frac{1}{n}\}\subseteq\bigcup I_j$, of total length $<\frac{\delta}{n^2}$. Union of covers has length $\leq\sum_{n=1}^\infty\frac{\delta}{2^n}=\delta$, leading to a contradiction.\\
+Finally, this implies that for any partition $P$ of $[a,b]$, the bad intervals have total length always at least $\epsilon'$ for some $\epsilon'>0$.\\
+Thus, $U(f,P)-L(f,P)\geq\sum_{\text{bad}}(\sup f-\inf f)\Delta x_i\geq\epsilon\sum_{\text{bad}}\Delta x_i\geq\epsilon\epsilon'$, here we define "bad" as containing a point of $\{x:\osc(f)(x)>\epsilon\}$.\\
+This implies that $f$ is not integrable, which is a contradiction.}
+\textbf{Jan. 21}\\
+\rmk{In the proof of Lebesgue criterion for Riemann integrability, we should instead denote "good" intervals as those with $\osc(f)\leq\alpha$, and "bad" intervals as those with $\osc(f)>\alpha$.}
+\prop{Let $f:[a,b]\to\R$ be integrable. Then $F(x)=\int_a^xf(t)dt$ is (uniformly) continuous.}
+{$|F(x)-F(y)|=|\int^x_yf(t)dt|\leq\int^x_y|f(t)|dt\leq M|x-y|<\epsilon$ for $|x-y|<\frac{\epsilon}{M}=\delta$, where $M=\sup_{[a,b]}|f|$.}
+\prop{(Fundamental Theorem of Calculus) If $f:[a,b]\to\R$ is continuous, then $F(x)=\int^x_af(t)dt$ is differentiable and $F'(x)=f(x)$. (Part I)\\
+If $f:[a,b]\to\R$ is differentiable, and $\exists F:[a,b]\to\R$ s.t. $F'=f$, then $\intab f(t)dt=F(b)-F(a)$.}
+{(Part I) $\frac{F(x+h)-F(x)}{h}=\frac{1}{h}\int^{x+h}_xf(t)dt=f(c)\to f(x)$ as $h\to 0$ for $c\in[x,x+h]\Rightarrow c\to 0$.\\
+(Part II) $F(b)-F(a)=F(b)-F(x_n)+F(x_n)-\cdots+F(x_1)-F(a)=\sum_iF(x_{i+1})-F(x_i)=\sum_if(x_i^*)\Delta x_i$. Push $\mesh(P)\to 0$, this approaches $\intab f(x)dx$. Therefore, $F(b)-F(a)=\intab f(x)dx$.}
+\prop{(Integration by Parts) If $f,g:[a,b]\to\R$ are continuously differentiable functions, then:\\
+$\intab f(x)g'(x)dx=f(b)g(b)-f(a)g(a)-\intab f'(x)g(x)dx$.}
+{Apply fundamental theorem of calculus to product rule.}
+\defn{Given a sequence of functions, $(f_n)_n:X\to Y$ and $f:X\to Y$, we say that $f_n\to f$ pointwise if $f_n(x)\to f(x)\forall x\in X$. We say that $f_n\to f$ uniformly if for all $\epsilon>0$, there exists $N$ s.t. $d(f_n(x),f(x))<\epsilon\forall x\in X$ for $n\geq N$.}
+For example, we define $f_n:[0,1]\to\R$ as $f_n(x)=x^n$. It is apparent that each $f_n$ is continuous.\\
+However, we have that $f_n$ pointwise converges to $f(x)=\begin{cases}0:0\leq x<1\\1:x=1\end{cases}$, which is not continuous.\\
+\prop{Given $(f_n):X\to Y$ continuous, $f:X\to Y$ s.t. $f_n\to f$ uniformly, then $f$ is continuous.}
+{Fix $x\in X$, consider $N$ large s.t. $d(f_n(y),f(y))<\frac{\epsilon}{3}$ for all $y\in X$.\\
+Then $d(f(x),f(y))\leq d(f(x),f_N(x))+d(f_N(x),f_N(y))+d(f_N(y),f(y))<\frac{\epsilon}{3}+\frac{\epsilon}{3}+\frac{\epsilon}{3}=\epsilon$ for $d(x,y)<\delta$.}
+\prop{(Dini's Theorem) Let $X$ be compact, and let continuous $f_n:X\to\R$ be a monotonically decreasing sequence. That is, $f_1\geq f_2\geq f_3\geq\cdots$, and suppose $f_n\to f$ pointwise for some $f:X\to\R$.\\
+Then, if $f$ is continuous, the convergence is uniform.}
+{Fix $\epsilon>0$. Then, since $X$ is compact, $f$ is (uniformly) continuous.\\
+Then $\exists\delta>0$ s.t. $f(x)-\epsilon<f(y)$ for $d(x,y)<\delta$.\\
+Moreover, for fixed $N$, $\exists\delta_N>0$ (since $f_N$ uniformly continuous) s.t. $f_N(y)<f_N(x)+\epsilon$ for $d(x,y)<\delta_N$.\\
+Then for each $x\in X$, $\exists N$ and $\delta'=\min\{\delta,\delta_N\}>0$ s.t. for $n\geq N$ and $d(x,y)<\delta'$, one has:\\
+$f_n(y)-f(y)\leq f_N(y)-f(y)<f_N(x)+\epsilon-(f(x)-\epsilon)=f_N(x)-f(x)+2\epsilon$.\\
+Taking the union of these balls for all $x\in X$ gives an open cover of $X$. Since $X$ compact, $\exists$ finite subcover $B(x_1,\delta_1),\cdots,B(x_k,\delta_k)$.\\
+Then, for any $y\in Y$, if we take $N=\max\{N_1,\cdots,N_k\},f_n(y)-f(y)<3\epsilon$ for $n\geq N$. Then, since $\epsilon>0$ is arbitrary and so is $y$, we converge uniformly.}
+\prop{(Weierstrass M-Test) If $f_n:X\to\R$ is a sequence of continuous functions s.t. $|f_n(x)|\leq M_n$ for all $x\in X$ and $\sum_{n=1}^\infty M_n<\infty$, then $\sum_{n=1}^\infty f_n$ is uniformly convergent.}
+{We want to show that $\sum_{n=1}^\infty$ is uniformly Cauchy, that is, $|\sum_{n=N}^Mf_n(x)|<\epsilon\forall x\in X$ for $M,N$ large.\\
+Indeed, we have this is $\leq\sum_N^MM_n<\epsilon$ for $M,N$ large.}
+\thm{(Corollary) A summable series of continuous functions is continuous.}
+\defn{A collection $\mathcal{F}$ of functions $f_n:X\to\R$ is (uniformly) equicontinuous if for all $\epsilon>0$, there exists $\delta>0$ s.t. $\forall f\in\mathcal{F}$ and $\forall x,y\in X$, $d(x,y)<\delta\Rightarrow d(f(x),f(y))<\epsilon$.}
+\thm{(Arzela-Ascoli Theorem) Let $X$ be a compact metric space, and let $\mathcal{F}$ be a uniformly equicontinuous collection of functions $f_n:X\to\R$. Then, if $\mathcal{F}$ is pointwise bounded, that is, $\forall x\in X$, $\sup_{f\in\mathcal{F}}|f(x)|<\infty$, then $\mathcal{F}$ is precompact in $C(X)$. That is, any sequence $(f_n)_n\subseteq\mathcal{F}$ has a uniformly convergent subsequence.}
+\end{document}

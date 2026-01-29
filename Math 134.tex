@@ -1,0 +1,150 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amsthm,amssymb,tcolorbox}
+\geometry{letterpaper, top=5in, margin=0.75in}
+\linespread{1.2}
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+
+\usepackage[framemethod=default]{mdframed}
+\newcommand{\cbox}[2][blue!15]{\noindent\begin{mdframed}[backgroundcolor=#1]#2\end{mdframed}}
+\newcommand{\defn}[1]{\cbox[red!15]{\textbf{Definition:} #1}}
+\newcommand{\rmk}[1]{\cbox[teal!15]{\textbf{Remark:} #1}}
+\newcommand{\exer}[1]{\cbox[green!15]{\textbf{Exercise:} #1}}
+\newcommand{\thm}[1]{\cbox[blue!15]{\textbf{Theorem:} #1}}
+\newcommand{\prop}[2]{\cbox[orange!15]{\textbf{Proposition:} #1\\\textbf{Proof:} #2}}
+\mdfsetup{skipabove=0em}
+ 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[2][Question]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{}[Solution]}{\end{}}
+
+\setlength{\parindent}{0px}
+ 
+\begin{document}
+
+\title{Math 134 - Notes}
+\author{Jingxuan Shan}
+\date{Jan 5, 2026}
+\maketitle
+
+\defn{A system of Ordinary Differential Equations (ODEs) is $\{\dot{x_i}=f_i(x_1,\cdots,x_n)\}_{i=1}^n$.}
+An example for $n=2$ would be: $\dot{x_1}=x_1+x_2^2$, $\dot{x_2}=\sin(x_1)$.\\
+If all $f_i$ are linear, then this becomes a linear system.\\
+For example, $\dot{x}=rx+b$.\\
+Another example is the damped oscillator: $m\ddot{x}+b\dot{x}+kx=0$.\\
+To turn this into a system of ODEs, let $x_1=x$, $x_2=\dot{x}$.\\
+Therefore we have $\dot{x_2}=\frac{1}{m}(-bx_2-kx_1)$ and $\dot{x_1}=x_2$.\\
+A non-linear example: $\ddot{x}+\frac{g}{L}\sin(x)=0$ (swinging pendulum)
+\defn{The phase space is the set of possible states (values) for $\vec{x}=(x_1,\cdots,x_n).$}
+In most circumstances, the phase space would just be $\R^n$.
+\defn{A $\text{n}^{\text{th}}$-order system is a system of equations that has that has $n$ dimensions.}
+If time is explicitly referenced in the equation, that adds one dimension to the system.
+\defn{The trajectory is the path carved out by the $x_i(t)$'s.}
+\textbf{Jan. 7}\\
+Let us consider the first-order system $\dot{x}=f(x)$. Note that we do not allow $f(x)$ to be dependent on $t$, and $\dot{x}=f(x,t)$ should be treated as a two-dimensional (or second-order) system instead.\\
+As an example, $\dot{x}=\sin x$ can be solved in closed form, however the algebraic solution does not provide us with much info. For example, it does not tell us about whether the function would vanish or explode to infinity. Instead, let us try the graphical evaluation.\\
+If we draw the graph of $\dot{x}$ against $x$, we can see some very obvious things. The places where $f(x)>0$ is where $x$ will be shifting "rightward", and $f(x)<0$ is where $x$ will be shifting the other way. If $f(x)=0$ (where the graph intersects the x-axis), then we reached a "fixed point": if $x$ reaches this point, it will no longer move.\\
+Based on this information, we can draw another chart that tells us about the behavior of $x$ for different starting values - does it move toward some fixed point, start at some fixed point (and therefore remain stationary), or explode?\\
+If $x$ moves back to the fixed point after any sufficiently small "nudge", then the fixed point is stable. (Note that if the ball still moves away when the nudge is large enough, then this is sometimes known as "locally stable")\\
+If it instead moves away, then it is unstable.\\
+If we are to analyze a population where the growth is directly proportional to population, we could arrive at a system $\dot{N}=rN$. However, in reality we can observe that many societies have a "limit" of population - if this number is exceeded, the population stops growing (rate of change becomes negative).\\
+This leads us to the logistic equation: $\dot{N}=rN(1-\frac{N}{K})$.\\
+If we are to analyze this system for fixed points, then we can see that one fixed point is $x=K$, telling us that the population would always demonstrate a tendency to "move" towards the population limit. The only exception is when $x=0$, the other fixed point, since in that scenario there is no one to reproduce.\\
+\textbf{Jan. 9}\\
+Consider $\dot{x}=f(x(t))$ with a fixed point $x^*$. Define $\eta(t)=x(t)-x^*$. This is a perturbation away from $x^*$.\\
+If $\eta(t)$ grows as $t\to\infty$, $x^*$ is unstable. If $\eta(t)$ converges to $0$, then $x^*$ is stable.\\
+Consider $\dot{\eta}=\frac{d}{dt}(x(t)-x^*)=\dot{x}$, therefore $\dot{\eta}=f(x(t))\Rightarrow\dot{\eta}=f(x^*+\eta(t))$.\\
+Tayler expansion: $f(x^*+\eta(t))=f(x^*)+\eta(t)f'(x^*)+O(\eta^2)$. So if $\eta$ is small, then $\dot{\eta}\approx\eta f'(x^*)$ (linear ODE).\\
+Let us consider the behavior of $\eta(t)$. Recall that the ODE $\dot{\eta}=c\eta$ has solution $\eta(t)=\eta_0e^{ct}$. So, if $f'(x^*)>0$ then $\eta(t)$ grows exponentially (unstable), and if $f'(x^*)<0$ then $\eta(t)$ decays exponentially (stable).\\
+$|f'(x^*)|$ quantifies the stability of $x^*$ (how fast it converges/diverges).\\
+$\frac{1}{|f'(x^*)|}$ is the characteristic time scale (the time it takes for the solution to move towards/away the fixed point).\\
+\thm{(Existence \& Uniqueness) Consider the IVP $\dot{x}=f(x),x(0)=x_0$. If $f$ and $f'$ are continuous on an open interval $I\subset\R$, that contains $x_0$, then there exists a unique solution on some time interval around $t=0$.}
+\textbf{Jan. 12}\\
+\rmk{For a continuous $f$, the solutions of $\dot{x}=f(x)$ can either converge to a fixed point, or diverge to $\pm\infty$.}
+In fact, trajectories $x(t)$ in this case are monotonic (nondecreasing or nonincreasing).\\
+For a discontinuous $f$, we need more advanced techniques.\\
+For example, consider $f(x)=\begin{cases}-1:x<0 \\ 1:x\geq 0\end{cases}$.\\
+We have that $\begin{cases}\dot{x}=-1\Rightarrow x=-t+C \\ \dot{x}=1\Rightarrow x=t+C\end{cases}$. Then for some given initial condition $x(0)$ it is possible to unite the two functions.\\
+Consider the damped oscillator: $m\ddot{x}+b\dot{x}+kx=F(x)$. $F(x)$ is the restoring force, $kx$ the spring force, $b\dot{x}$ the damping force, and $m\ddot{x}$ the inertia (Similar to $F=ma$).\\
+This is a second order system, yet if $m\ddot{x}<<b\dot{x}$, then $b\dot{x}+kx\approx F(x)$, which is a first-order system.\\
+There are no oscillations because the damping is too strong.\\
+For $\dot{x}=f(x)$, if $f$ can be expressed as $f=-\frac{dv}{dx}$ for some $v:\R\to\R$, then $f(x)$ can be viewed as a gradient flow.\\
+Interpret $v$ as an energy, and the solution $x(t)$ can be thought as "sliding down" the energy graph.\\
+\prop{$v(x(t))$ decreases with time.}
+{We have that $\frac{dv}{dt}=\frac{dv}{dx}\frac{dx}{dt}$, and $\frac{dx}{dt}=\dot{x}=f(x)=-\frac{dv}{dx}$.\\
+So $\frac{dv}{dt}=\frac{dv}{dx}(-\frac{dv}{dx})=-(\frac{dv}{dx})^2\leq 0$.}
+A fixed point $x^*$ satisfies $f(x^*)=0\Rightarrow\frac{dv}{dt}(x^*)=0\Rightarrow x^*$ is local min or max of $v$.\\
+If $x^*$ is stable, then $v(x^*)$ reaches local min. If $x^*$ is unstable, $v(x^*)$ reaches local max.\\
+Reconcile: previously we stated that $x^*$ is stable if $f'(x^*)<0$. $f'=-\frac{d^2v}{dx^2}<0\Rightarrow v$ is concave up $\Rightarrow v$ has local min. By same logic we have that if $x^*$ is unstable, then $v$ reaches local max.\\
+\textbf{Jan. 14}\\
+Bifurcations\\
+Consider the example $\dot{x}=r+x^2$, $r\in\R$.\begin{itemize}
+\item If $r>0$, there are no fixed points.
+\item If $r=0$, we have one semistable fixed point.
+\item If $r<0$, we have one stable and one unstable fixed point.
+\end{itemize}
+\defn{Bifurcations are changes in the dynamics that result from changes in the parameters of $f$.}
+\defn{Bifurcation points are the parameter values at which bifurcations occur.}
+We denote the bifurcation points by $r_c$.\\
+Saddle-node bifurcations are bifurcations in which fixed points are created/destroyed.\\
+For example, consider $\dot{x}=r+x^2$. We have $x^*=\pm\sqrt{-r}$ for $r<0$, and $x^*=0$ for $r=0$, and no fixed points otherwise.\\
+Then we have $r_c=0$ since at this point the number of fixed points went from $2$ to $0$ (or vice versa).\\
+Bifurcation diagram relates $r$ to $x^*$, with $x^*$ on the $y$-axis and $r$ on the $x$-axis. This diagram demonstrates the number of $x^*$ for any given $r$, as well as how they change.\\
+A stable fixed point corresponds to a solid line, whereas an unstable fixed point corresponds to a dotted line.\\
+For example, consider $\dot{x}=r-x-e^{-x}$.\\
+We can plot $y=r-x$ and $y=e^{-x}$ on the graph, then the fixed points are where the two lines intersect (That is, $r-x=e^{-x}$).\begin{itemize}
+\item if $r>1$, then there are two fixed points, one stable and one unstable.
+\item if $r=1$, then there is one semistable fixed point.
+\item if $r<1$, there are no fixed points.
+\end{itemize}
+So $r_c=1$.\\
+We can use an alternative method to derive $r_c$: since we know that the two graphs are tangent to each other, we have that there exists an intersection, and they share the same slope.\\
+Hence, set $e^{-x^*}=r_c-x^*$ and $\frac{d}{dx}(e^{-x^*})=\frac{d}{dx}(r_c-x^*)$. That is, the derivative of $e^{-x}$ and $r_c-x$ at $x=x^*$ are equal.\\
+Now we try solve this system:$\begin{cases}e^{-x}-(r-x)=0\\-e^{-x}+1=0\end{cases}\Rightarrow\begin{cases}x=0\\r=1\end{cases}$.\\
+So this method gives us the same result.\\
+Next time we WTS: $\dot{x}=r\pm x^2$ is the normal term of saddle note bifurcations. (That is, behavior when $(x,r)$ is close to $(x^*,r_c)$).\\
+\textbf{Jan. 16}\\
+Saddle Node Bifurcations (SNBs).\\
+A normal form of saddle node bifurcations is a simple class of systems that has the same local behavior near the bifurcation. That is, when $(x,r)\to(x^*,r_c)$.\\
+\prop{The normal form of a saddle node bifurcation is $\dot{x}=r\pm x^2$.}
+{Consider a system $\dot{x}=f(x,r)$ that has a saddle node bifurcation at $(x^*,r_c)$. Then it must be true that:\\
+1) $f(x^*,r_c)=0$ by the definition of fixed points.\\
+2) $f_x(x^*,r_c)=0$ (The derivative of $f$ regarding $x$) by "tangency"/Implicit Function Theorem.\\
+Now, we Taylor-expand $f(x,r)$ around $(x^*,r_c)$.\\
+$f(x^*,r_c)+(x-x^*)f_x(x^*,r_c)+(r-r_c)f_r(x^*,r_c)+\frac{(x-x^*)^2}{2}f_{xx}(x^*,r_c)+O(x^3)+O(r^2)\approx(r-r_c)f_r(x^*,r_c)+\frac{(x-x^*)^2}{2}f_{xx}(x^*,r_c)$.\\
+This is very similar to the normal form, $\dot{x}=r\pm x^2$, with an $r$ term and a $x^2$ term.}
+Note that generally, $f_r(x^*,r_c)\neq 0$ because the system's fixed points change when $r=r_c$.\\
+Normal forms have to describe the saddle node bifurcations under small perturbations.\\
+Consider $\dot{x}=x^4+r$. This is not considered a saddle node bifurcation since a small perturbation (e.g. a small quadratic term) would affect the number of fixed points.\\
+\underline{Transcritical Bifurcation}\\
+Transcritical bifurcations are where the stability of fixed points changes.\\
+For example, consider $\dot{x}=rx-x^2=x(r-x)$. We have that the fixed points are at $x=0$ and $x=r$.\\
+When $r=0$, the fixed points become one (But not completely destroyed).\\
+When $r<0$, we have unstable $x=r$ and stable $x=0$.\\
+When $r>0$, we have stable $x=r$ and unstable $x=0$.\\
+To see this, consider the sign of $f'(x^*)=r-2x^*$.\\
+We have that $f'(0)=r,f'(r)=-r$, so $x^*=0$ is stable when $r<0$, unstable when $r>0$. The stability of $x^*=r$.\\
+Therefore, the bifurcation point is $r=0$ where the stability of the two fixed points switch.\\
+Another example is $\dot{x}=x(1-x^2)-a(1-e^{-bx})$. We have that $f'(x)=1-3x^2-abe^{-bx}$.\\
+$x^*=0$ is an obvious fixed point. We have that $f'(0)=1-ab$.\\
+So $x^*=0$ is stable when $ab>1$, unstable when $ab<1$.\\
+If $ab=1$, we have a bifurcation point.\\
+We have that the normal function for transcritical bifurcations is $\dot{x}=rx\pm x^2$.\\
+\end{document}
